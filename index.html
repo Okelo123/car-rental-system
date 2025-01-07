@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarRent - Premium Car Rental Service</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Variables */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --light-gray: #f5f6fa;
+            --dark-gray: #2d3436;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--primary-color);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('/api/placeholder/1200/800') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Search Form */
+        .search-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* Car Grid */
+        .car-grid {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .car-details {
+            padding: 1.5rem;
+        }
+
+        .car-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .car-price {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .car-features {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #c0392b;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #bdc3c7;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">CarRent</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#cars" >Cars</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="#" id="loginBtn">Login</a>
+            </div>
+
+           
+            <div class="mobile-menu">☰</div>
+        </nav>
+    </header>
+
+    <nav>
+        <ul class="navbar">
+          <li><a href="#">Home</a></li>
+          <li>
+            <a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="#">Web Development</a></li>
+              <li><a href="#">Mobile Development</a></li>
+              <li><a href="#">SEO</a></li>
+            </ul>
+          </li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Premium Car Rental Service</h1>
+            <p>Choose from our wide range of luxury and comfort vehicles</p>
+            <div class="search-form">
+                <div class="form-group">
+                    <label>Pick-up Location</label>
+                    <input type="text" placeholder="Enter location">
+                </div>
+                <div class="form-group">
+                    <label for="pickupDate">Pick-up Date</label>
+                    <input type="date" id="pickupDate">
+                </div>
+                <div class="form-group">
+                    <label for="returnDate">Return Date</label>
+                    <input type="date" id="returnDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Car Type</label>
+                    <select title="Car Type">
+                        <option>All Cars</option>
+                        <option>Luxury</option>
+                        <option>SUV</option>
+                        <option>Economy</option>
+                    </select>
+
+                </div>
+                <button class="btn btn-primary">Search Cars</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Car Grid -->
+    <section class="car-grid" id="cars">
+        <!-- Car cards will be dynamically populated -->
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Premium car rental service providing luxury and comfort vehicles for your journey.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#cars">Cars</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>Email: jumabrian3583.com</p>
+                <p>Phone: +254 743418889</p>
+                <p>Address: 123 Car Street, City, Country</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" class="search-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample car data - In real application, this would come from the backend
+        const cars = [
+            {
+                id: 1,
+                name: 'BMW 3 Series',
+                price: 100,
+                image: 'img/bmw dark.jpg',
+                features: ['4 Seats', 'Automatic', 'GPS']
+
+            },
+            {
+                id: 2,
+                name: 'Mercedes C-Class',
+                price: 120,
+
+
+
+                image: 'img/benz c class.jpg',
+                features: ['4 Seats', 'Automatic', 'GPS']
+            },
+            {
+                id: 3,
+                name: 'Audi A4',
+                price: 110,
+                image: 'img/Audi A4.jpg',
+                features: ['4 Seats', 'Automatic', 'GPS']
+
+            },
+            {
+                id: 3,
+                name: 'Subaru',
+                price: 110,
+                image: 'img/Subaru.avif',
+                features: ['4 Seats', 'Automatic', 'GPS']
+
+            },
+        ];
+
+        // Populate car grid
+        function populateCarGrid() {
+            const carGrid = document.querySelector('.car-grid');
+            carGrid.innerHTML = cars.map(car => `
+                <div class="car-card">
+                    <img src="${car.image}" alt="${car.name}" class="car-image">
+                    <div class="car-details">
+                        <h3 class="car-title">${car.name}</h3>
+                        <div class="car-price">$${car.price}/day</div>
+                        <div class="car-features">
+                            ${car.features.map(feature => `
+                                <span class="feature">${feature}</span>
+                            `).join('')}
+                        </div>
+                        <button class="btn btn-primary" onclick="rentCar(${car.id})">Rent Now</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal functionality
+        const modal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const closeBtn = document.querySelector('.close');
+
+        loginBtn.onclick = function() {
+            modal.style.display = 'flex';
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Mobile menu functionality
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Rent car function
+        function rentCar(carId) {
+            // In a real application, this would connect to the backend
+            console.log(`Renting car with ID: ${carId}`);
+            alert('Please login to rent a car');
+            modal.style.display = 'flex';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCarGrid();
+        });
+    </script>
+</body>
+</html>
